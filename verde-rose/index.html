@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Verde &amp; Rose">
+<meta name="theme-color" content="#33472f">
+<title>Verde & Rose</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#17241a; --ink-soft:#2c3b2c;
+  --cream:#f7f4ec; --card:#ffffff;
+  --sage:#5c7357; --sage-deep:#33472f;
+  --rose:#b96a5a;
+  --gold:#9c7d3f;
+  --line: rgba(23,36,26,0.1);
+  box-sizing:border-box;
+  padding-top: env(safe-area-inset-top,0px);
+  padding-bottom: env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --cream:#141b14; --card:#1c261c; --ink:#eee8dc; --ink-soft:#cfd6c9; --line: rgba(238,232,220,0.12); }
+}
+:root[data-theme="dark"]{ --cream:#141b14; --card:#1c261c; --ink:#eee8dc; --ink-soft:#cfd6c9; --line: rgba(238,232,220,0.12); }
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-padding-top: env(safe-area-inset-top,0px);}
+html,body{height:100%;}
+body{ background:var(--cream); color:var(--ink); font-family:'Inter',system-ui,sans-serif; max-width:480px; margin:0 auto; position:relative; min-height:100%; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+.serif{font-family:'Fraunces',serif;}
+[hidden]{display:none!important;}
+
+/* ---- Gate / sign-in ---- */
+#gate{ min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 28px; text-align:center; gap:18px; }
+#gate .mark{width:44px;height:44px;color:var(--sage-deep);}
+#gate h1{font-size:1.7rem; font-weight:500;}
+#gate p{color:var(--ink-soft); font-size:.9rem; max-width:280px;}
+.gate-identity{ display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:10px 16px; margin-top:6px; }
+.gate-identity img{width:34px;height:34px;border-radius:50%;}
+.gate-identity span{font-size:.88rem; font-weight:600;}
+.btn-solid-wide{ margin-top:10px; width:100%; max-width:280px; padding:14px; border-radius:14px; border:none; background:var(--sage-deep); color:#f2ede2; font-weight:600; font-size:.92rem; cursor:pointer; }
+.gate-note{font-size:.72rem; color:var(--ink-soft); max-width:260px;}
+
+/* header */
+header{ position:sticky; top:0; z-index:20; padding: calc(16px + env(safe-area-inset-top,0px)) 20px 12px; background:var(--cream); display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+.brand{display:flex; align-items:center; gap:8px;}
+.brand svg{width:24px;height:24px;}
+.brand h1{font-size:1.1rem; font-weight:600; letter-spacing:.2px;}
+.brand h1 span{color:var(--rose);}
+.header-actions{display:flex; align-items:center; gap:8px;}
+.icon-btn{ position:relative; background:none; border:1px solid var(--line); width:36px;height:36px;border-radius:50%; display:flex; align-items:center;justify-content:center; color:var(--ink); cursor:pointer; padding:0; overflow:hidden; }
+.icon-btn img{width:100%;height:100%;object-fit:cover;}
+.cart-badge{ position:absolute; top:-4px; right:-4px; background:var(--rose); color:#fff; font-size:.62rem; font-weight:600; width:16px;height:16px;border-radius:50%; display:flex;align-items:center;justify-content:center; }
+
+main{padding: 16px 20px 100px;}
+.tab{display:none;}
+.tab.active{display:block; animation:fade .25s ease;}
+@keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1;transform:none;}}
+
+/* Jardim */
+.stat-row{display:flex; gap:10px; margin-bottom:18px;}
+.stat{ flex:1; background:var(--sage-deep); color:#f2ede2; border-radius:14px; padding:14px; }
+.stat b{display:block; font-family:'Fraunces',serif; font-size:1.5rem;}
+.stat span{font-size:.72rem; opacity:.85;}
+.section-title{display:flex; align-items:baseline; justify-content:space-between; margin:22px 0 12px;}
+.section-title h2{font-family:'Fraunces',serif; font-size:1.05rem; font-weight:600;}
+.plant-card{ display:flex; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px; margin-bottom:10px; align-items:center; }
+.plant-thumb{ width:52px;height:52px;border-radius:12px; flex:none; background:linear-gradient(160deg,var(--sage),var(--sage-deep)); display:flex;align-items:center;justify-content:center; overflow:hidden; }
+.plant-thumb img{width:100%;height:100%;object-fit:cover;}
+.plant-thumb svg{width:26px;height:26px; color:#f2ede2;}
+.plant-info{flex:1; min-width:0;}
+.plant-info h3{font-size:.95rem; font-weight:600;}
+.plant-info p{font-size:.75rem; color:var(--ink-soft); margin-top:2px;}
+.plant-info .due{font-size:.72rem; margin-top:4px; font-weight:500;}
+.due.late{color:var(--rose);} .due.ok{color:var(--sage);}
+.water-btn{ border:none; background:var(--sage-deep); color:#f2ede2; font-size:.72rem; font-weight:600; padding:8px 12px; border-radius:10px; cursor:pointer; white-space:nowrap; }
+.empty{ text-align:center; padding:36px 12px; color:var(--ink-soft); font-size:.85rem; border:1px dashed var(--line); border-radius:16px; }
+.fab{ position:fixed; bottom:calc(84px + env(safe-area-inset-bottom,0px)); right:calc(50% - 220px); width:52px;height:52px;border-radius:50%; background:var(--rose); color:#fff; border:none; font-size:1.5rem; display:flex; align-items:center;justify-content:center; cursor:pointer; box-shadow:0 8px 20px rgba(185,106,90,.35); z-index:15; }
+@media (max-width:480px){ .fab{right:20px;} }
+
+/* Floricultura */
+.hero-banner{ background:var(--sage-deep); color:#f2ede2; border-radius:18px; padding:22px 20px; margin-bottom:20px; position:relative; overflow:hidden; }
+.hero-banner h2{font-family:'Fraunces',serif; font-size:1.3rem; font-weight:500; max-width:75%;}
+.hero-banner p{font-size:.8rem; opacity:.85; margin-top:6px; max-width:80%;}
+.hero-banner svg{position:absolute; right:-10px; bottom:-14px; width:100px; height:100px; opacity:.5;}
+.chip-row{display:flex; gap:8px; overflow-x:auto; padding-bottom:6px; margin-bottom:6px;}
+.chip{ flex:none; padding:7px 14px; border-radius:20px; border:1px solid var(--line); font-size:.78rem; background:var(--card); cursor:pointer; color:var(--ink); }
+.chip.active{background:var(--sage-deep); color:#f2ede2; border-color:var(--sage-deep);}
+.bouquet-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.bouquet-card{background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden;}
+.bouquet-art{height:100px; display:flex;align-items:center;justify-content:center;}
+.bouquet-body{padding:10px 12px 12px;}
+.bouquet-body h3{font-size:.85rem; font-weight:600; line-height:1.2;}
+.bouquet-body .price{font-size:.8rem; color:var(--gold); font-weight:600; margin:4px 0 8px;}
+.add-btn{width:100%; border:none; background:var(--sage-deep); color:#f2ede2; font-size:.75rem; font-weight:600; padding:8px; border-radius:9px; cursor:pointer;}
+.add-btn.added{background:var(--rose);}
+
+/* Assistente (AI) */
+.ai-intro{color:var(--ink-soft); font-size:.85rem; margin-bottom:14px;}
+.chat-log{display:flex; flex-direction:column; gap:10px; margin-bottom:14px;}
+.bubble{max-width:88%; padding:11px 14px; border-radius:14px; font-size:.86rem; line-height:1.45; white-space:pre-wrap;}
+.bubble.user{align-self:flex-end; background:var(--sage-deep); color:#f2ede2; border-bottom-right-radius:4px;}
+.bubble.ai{align-self:flex-start; background:var(--card); border:1px solid var(--line); border-bottom-left-radius:4px;}
+.ai-suggestions{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;}
+.ai-chip{border:1px solid var(--line); background:var(--card); border-radius:14px; padding:8px 12px; font-size:.76rem; cursor:pointer; color:var(--ink);}
+.ai-input-row{position:fixed; bottom:calc(64px + env(safe-area-inset-bottom,0px)); left:50%; transform:translateX(-50%); width:100%; max-width:480px; padding:8px 20px; background:var(--cream); display:flex; gap:8px; border-top:1px solid var(--line);}
+.ai-input-row input{flex:1; padding:11px 14px; border-radius:22px; border:1px solid var(--line); background:var(--card); color:var(--ink); font-size:.85rem;}
+.ai-input-row button{width:42px;height:42px;border-radius:50%; border:none; background:var(--sage-deep); color:#f2ede2; cursor:pointer; flex:none;}
+
+/* Bottom nav */
+nav.bottom{ position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; background:var(--card); border-top:1px solid var(--line); display:flex; padding: 8px 8px calc(10px + env(safe-area-inset-bottom,0px)); z-index:20; }
+nav.bottom button{ flex:1; background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--ink-soft); font-size:.66rem; cursor:pointer; padding:4px; }
+nav.bottom button svg{width:20px;height:20px;}
+nav.bottom button.active{color:var(--sage-deep); font-weight:600;}
+
+/* sheets */
+.overlay{ position:fixed; inset:0; background:rgba(20,27,20,.5); z-index:30; display:none; align-items:flex-end; justify-content:center; }
+.overlay.open{display:flex;}
+.sheet{ background:var(--cream); width:100%; max-width:480px; border-radius:22px 22px 0 0; padding:20px 20px calc(24px + env(safe-area-inset-bottom,0px)); max-height:85vh; overflow-y:auto; }
+.sheet h2{font-family:'Fraunces',serif; font-size:1.15rem; margin-bottom:16px;}
+.field{margin-bottom:14px;}
+.field label{display:block; font-size:.72rem; color:var(--sage-deep); font-weight:600; margin-bottom:5px; text-transform:uppercase; letter-spacing:.4px;}
+.field input, .field select{ width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--card); color:var(--ink); font-size:.9rem; font-family:'Inter',sans-serif; }
+.photo-upload{ border:1.5px dashed var(--line); border-radius:14px; height:110px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; cursor:pointer; color:var(--ink-soft); font-size:.75rem; overflow:hidden; position:relative; background:var(--card); }
+.photo-upload img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+.photo-upload svg{width:24px;height:24px;}
+.sheet-actions{display:flex; gap:10px; margin-top:18px;}
+.btn-ghost{flex:1; padding:12px; border-radius:12px; border:1px solid var(--line); background:none; color:var(--ink); font-weight:600; font-size:.85rem; cursor:pointer;}
+.btn-solid{flex:1.4; padding:12px; border-radius:12px; border:none; background:var(--sage-deep); color:#f2ede2; font-weight:600; font-size:.85rem; cursor:pointer;}
+.cart-item{display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--line); font-size:.85rem;}
+.cart-total{display:flex; justify-content:space-between; font-weight:600; padding-top:12px; font-family:'Fraunces',serif; font-size:1.05rem;}
+.profile-row{display:flex; align-items:center; gap:12px; margin-bottom:18px;}
+.profile-row img{width:52px;height:52px;border-radius:50%;}
+.profile-row h3{font-size:1rem;}
+.profile-row p{font-size:.78rem; color:var(--ink-soft);}
+.toggle-row{display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-top:1px solid var(--line);}
+.switch{width:42px;height:24px;border-radius:20px; background:var(--line); position:relative; cursor:pointer; flex:none;}
+.switch.on{background:var(--sage-deep);}
+.switch i{position:absolute; top:2px; left:2px; width:20px;height:20px;border-radius:50%; background:#fff; transition:.2s;}
+.switch.on i{left:20px;}
+.toast{ position:fixed; bottom:96px; left:50%; transform:translateX(-50%); background:var(--sage-deep); color:#f2ede2; padding:10px 18px; border-radius:30px; font-size:.8rem; z-index:40; opacity:0; pointer-events:none; transition:opacity .25s; max-width:80%; text-align:center; }
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M20 6c-2 6-8 8-8 15a8 8 0 0016 0c0-7-6-9-8-15z"/><path d="M20 15v19" stroke-linecap="round"/></svg>
+  <h1 class="serif">Verde &amp; Rose</h1>
+  <p>Cultiva a tua calma. Cuidado de plantas e criações botânicas, guardados com a tua conta.</p>
+  <div class="gate-identity" id="gateIdentity" hidden>
+    <img id="gateAvatar" alt="">
+    <span id="gateName"></span>
+  </div>
+  <button class="btn-solid-wide" id="gateEnter">Iniciar sessão</button>
+  <p class="gate-note" id="gateNote">A iniciar sessão com a tua conta Claude…</p>
+</div>
+
+<div id="app" hidden>
+<header>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 6c-2 6-8 8-8 15a8 8 0 0016 0c0-7-6-9-8-15z"/><path d="M20 15v19" stroke-linecap="round"/></svg>
+    <h1 class="serif">Verde <span>&amp; Rose</span></h1>
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" id="profileBtn" aria-label="Perfil"><img id="navAvatar" alt=""></button>
+    <button class="icon-btn" id="cartBtn" aria-label="Carrinho">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 3h2l2.4 12.2a2 2 0 002 1.8h9.2a2 2 0 002-1.7L21 8H6"/></svg>
+      <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="tab active" id="tab-jardim">
+    <div class="stat-row">
+      <div class="stat"><b id="statTotal">0</b><span>plantas no jardim</span></div>
+      <div class="stat" style="background:var(--rose);"><b id="statDue">0</b><span>precisam de água</span></div>
+    </div>
+    <div class="section-title"><h2>O meu jardim</h2></div>
+    <div id="plantList"></div>
+  </section>
+
+  <section class="tab" id="tab-flor">
+    <div class="hero-banner">
+      <svg viewBox="0 0 100 100" fill="none" stroke="#f2ede2" stroke-width="1.4"><path d="M50 12c-6 12-20 16-20 32a20 20 0 0040 0c0-16-14-20-20-32z"/></svg>
+      <h2>Criações botânicas<br>sob medida</h2>
+      <p>Arranjos frescos, colhidos ao amanhecer.</p>
+    </div>
+    <div class="chip-row" id="chipRow">
+      <button class="chip active" data-f="todas">Todas</button>
+      <button class="chip" data-f="romance">Romance</button>
+      <button class="chip" data-f="rustico">Rústico &amp; Livre</button>
+      <button class="chip" data-f="minimal">Minimal</button>
+    </div>
+    <div class="section-title"><h2>Arranjos em destaque</h2></div>
+    <div class="bouquet-grid" id="bouquetGrid"></div>
+  </section>
+
+  <section class="tab" id="tab-ai">
+    <p class="ai-intro">Pergunta ao nosso jardineiro-florista. Cuidados de plantas, escolha de arranjos, o que precisares.</p>
+    <div class="ai-suggestions" id="aiSuggestions">
+      <button class="ai-chip">Como cuido de uma Monstera?</button>
+      <button class="ai-chip">Que flores duram mais tempo?</button>
+      <button class="ai-chip">Porque amarelam as folhas?</button>
+    </div>
+    <div class="chat-log" id="chatLog"></div>
+  </section>
+</main>
+
+<button class="fab" id="fabAdd" aria-label="Adicionar planta">+</button>
+<div class="ai-input-row" id="aiInputRow" hidden>
+  <input id="aiInput" placeholder="Escreve a tua pergunta…" autocomplete="off">
+  <button id="aiSend" aria-label="Enviar">↑</button>
+</div>
+
+<nav class="bottom">
+  <button class="active" data-tab="jardim">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c-2.5 5-8 6-8 12a8 8 0 0016 0c0-6-5.5-7-8-12z"/></svg>
+    Jardim
+  </button>
+  <button data-tab="flor">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+    Floricultura
+  </button>
+  <button data-tab="ai">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.8 4.6L18 9.4l-4.2 1.8L12 16l-1.8-4.8L6 9.4l4.2-1.8L12 3z"/><path d="M5 17l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2z"/></svg>
+    Assistente
+  </button>
+</nav>
+</div>
+
+<!-- Add plant sheet -->
+<div class="overlay" id="plantOverlay">
+  <div class="sheet">
+    <h2 id="plantSheetTitle">Adicionar planta</h2>
+    <div class="field">
+      <label>Foto</label>
+      <div class="photo-upload" id="photoUpload">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M9 6l1-2h4l1 2"/></svg>
+        <span id="photoLabel">Adicionar foto</span>
+      </div>
+      <input type="file" accept="image/*" id="photoInput" hidden>
+    </div>
+    <div class="field"><label>Nome da planta</label><input id="pName" placeholder="Ex: Monstera"></div>
+    <div class="field"><label>Localização</label><input id="pLoc" placeholder="Ex: Sala de estar"></div>
+    <div class="field"><label>Frequência de rega</label>
+      <select id="pFreq">
+        <option value="3">A cada 3 dias</option>
+        <option value="7" selected>A cada semana</option>
+        <option value="14">A cada 2 semanas</option>
+        <option value="21">A cada 3 semanas</option>
+      </select>
+    </div>
+    <button class="btn-ghost" id="pDelete" hidden style="width:100%; color:var(--rose); border-color:var(--rose); margin-bottom:10px;">Apagar planta</button>
+    <div class="sheet-actions">
+      <button class="btn-ghost" id="pCancel">Cancelar</button>
+      <button class="btn-solid" id="pSave">Guardar planta</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cart sheet -->
+<div class="overlay" id="cartOverlay">
+  <div class="sheet">
+    <h2>O seu carrinho</h2>
+    <div id="cartItems"></div>
+    <div class="cart-total"><span>Total</span><span id="cartTotal">0,00 €</span></div>
+    <div class="sheet-actions">
+      <button class="btn-ghost" id="cartClose">Fechar</button>
+      <button class="btn-solid" id="cartCheckout">Finalizar encomenda</button>
+    </div>
+  </div>
+</div>
+
+<!-- Profile sheet -->
+<div class="overlay" id="profileOverlay">
+  <div class="sheet">
+    <h2>Perfil</h2>
+    <div class="profile-row">
+      <img id="profAvatar" alt="">
+      <div><h3 id="profName">—</h3><p id="profEmail">—</p></div>
+    </div>
+    <div class="toggle-row">
+      <span>Lembretes de rega</span>
+      <div class="switch" id="remindersToggle"><i></i></div>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn-ghost" id="profClose">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DAY = 86400000;
+const leaf = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3c-2.5 5-8 6-8 12a8 8 0 0016 0c0-6-5.5-7-8-12z"/></svg>`;
+const genericAvatar = 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="20" fill="%235c7357"/><circle cx="20" cy="16" r="7" fill="%23f2ede2"/><path d="M6 36c1-8 8-13 14-13s13 5 14 13" fill="%23f2ede2"/></svg>`);
+
+let claudeDb = null, claudeUser = null, claudeAssets = null, claudeSample = null;
+let uid = null;
+let plants = [], cart = [], remindersEnabled = true;
+let bouquets = [
+  {id:1, name:"Poesia de Peónias", cat:"romance", price:78, c1:"#e9d3cd", c2:"#c17a6b"},
+  {id:2, name:"Tons Pastel", cat:"romance", price:52, c1:"#f0e2df", c2:"#d9a79b"},
+  {id:3, name:"Verde Silvestre", cat:"rustico", price:45, c1:"#dfe6d5", c2:"#5c7357"},
+  {id:4, name:"Colheita Rústica", cat:"rustico", price:63, c1:"#ece0c4", c2:"#9c7d3f"},
+  {id:5, name:"Serenidade Zen", cat:"minimal", price:58, c1:"#e5e9e1", c2:"#33472f"},
+  {id:6, name:"Cascata de Orquídeas", cat:"minimal", price:92, c1:"#f2f0ea", c2:"#7c8a72"},
+];
+let activeFilter = "todas";
+let chatTurns = [];
+let pendingPhotoId = null;
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+/* ---------- local fallback (used when db/user are unavailable) ---------- */
+function lsLoad(){
+  try{ plants = JSON.parse(localStorage.getItem('vr_plants')||'[]'); }catch(e){ plants = []; }
+  try{ cart = JSON.parse(localStorage.getItem('vr_cart')||'[]'); }catch(e){ cart = []; }
+  if(!plants.length){
+    plants = [{id:'p1', name:"Monstera", loc:"Sala de Estar", freq:7, lastWatered: Date.now()-6*DAY}];
+  }
+}
+function lsSave(){
+  try{ localStorage.setItem('vr_plants', JSON.stringify(plants)); }catch(e){}
+  try{ localStorage.setItem('vr_cart', JSON.stringify(cart)); }catch(e){}
+}
+
+/* ---------- db-backed persistence ----------
+   Path parity matters: doc() needs an EVEN segment count, collection()
+   an ODD one. userCol() = "data/users/<uid>" (3, odd -> collection);
+   every ref below is built by chaining off it so parity stays correct. */
+function userCol(){ return claudeDb.collection('data/users/'+uid); }
+function profileDoc(){ return userCol().doc('profile'); }      // 4 segments
+function cartDoc(){ return userCol().doc('cart'); }             // 4 segments
+function plantsCol(){ return userCol().doc('garden').collection('plants'); } // 5 segments
+
+async function loadFromDb(){
+  const snap = await plantsCol().get();
+  plants = snap.docs.map(d=>({id:d.id, ...d.data()}));
+  if(!plants.length){
+    const seed = {name:"Monstera", loc:"Sala de Estar", freq:7, lastWatered: Date.now()-6*DAY, photoId:null};
+    const ref = await plantsCol().add(seed);
+    plants = [{id:ref.id, ...seed}];
+  }
+  try{
+    const c = await cartDoc().get();
+    cart = c.exists ? (c.data().items||[]) : [];
+  }catch(e){ cart = []; }
+  try{
+    const p = await profileDoc().get();
+    remindersEnabled = p.exists ? (p.data().remindersEnabled !== false) : true;
+  }catch(e){ remindersEnabled = true; }
+}
+async function saveCart(){
+  if(claudeDb && uid){ try{ await cartDoc().set({items: cart}); return; }catch(e){} }
+  lsSave();
+}
+async function saveProfile(){
+  if(claudeDb && uid){ try{ await profileDoc().set({remindersEnabled}); }catch(e){} }
+}
+
+/* ---------- rendering ---------- */
+function daysUntil(p){ return Math.ceil((p.lastWatered + p.freq*DAY - Date.now())/DAY); }
+
+function renderPlants(){
+  const list = document.getElementById('plantList');
+  list.innerHTML = '';
+  if(!plants.length) list.innerHTML = '<div class="empty">Ainda não tem plantas. Toque em + para adicionar a primeira.</div>';
+  let due = 0;
+  plants.forEach(p=>{
+    const d = daysUntil(p);
+    if(d<=0) due++;
+    const div = document.createElement('div');
+    div.className = 'plant-card';
+    div.style.cursor = 'pointer';
+    const thumb = p.photoUrl ? `<img src="${p.photoUrl}" alt="">` : leaf;
+    div.innerHTML = `
+      <div class="plant-thumb">${thumb}</div>
+      <div class="plant-info">
+        <h3></h3>
+        <p></p>
+        <p class="due ${d<=0?'late':'ok'}">${d<=0 ? 'Regar hoje' : 'Regar em '+d+' dia'+(d===1?'':'s')}</p>
+      </div>
+      <button class="water-btn" data-id="${p.id}">Regar</button>
+    `;
+    div.querySelector('.plant-info h3').textContent = p.name;
+    div.querySelector('.plant-info p').textContent = p.loc;
+    div.addEventListener('click', (e)=>{
+      if(e.target.closest('.water-btn')) return;
+      openPlantEditor(p.id);
+    });
+    list.appendChild(div);
+  });
+  document.getElementById('statTotal').textContent = plants.length;
+  document.getElementById('statDue').textContent = due;
+  list.querySelectorAll('.water-btn').forEach(btn=>{
+    btn.onclick = async (e)=>{
+      e.stopPropagation();
+      const p = plants.find(x=>x.id==btn.dataset.id);
+      p.lastWatered = Date.now();
+      if(claudeDb && uid){ try{ await plantsCol().doc(p.id).update({lastWatered:p.lastWatered}); }catch(e){} }
+      else lsSave();
+      renderPlants();
+      showToast(p.name + ' foi regada 💧');
+    };
+  });
+}
+
+function renderBouquets(){
+  const grid = document.getElementById('bouquetGrid');
+  grid.innerHTML = '';
+  bouquets.filter(b=>activeFilter==='todas'||b.cat===activeFilter).forEach(b=>{
+    const inCart = cart.find(c=>c.id===b.id);
+    const div = document.createElement('div');
+    div.className = 'bouquet-card';
+    div.innerHTML = `
+      <div class="bouquet-art" style="background:linear-gradient(140deg,${b.c1},${b.c2});">
+        <svg width="44" height="44" viewBox="0 0 40 40" fill="none" stroke="#ffffff" stroke-width="1.3" opacity=".9"><path d="M20 6c-2 6-8 8-8 15a8 8 0 0016 0c0-7-6-9-8-15z"/><path d="M20 15v19" stroke-linecap="round"/></svg>
+      </div>
+      <div class="bouquet-body">
+        <h3></h3>
+        <div class="price">${b.price.toFixed(2)} €</div>
+        <button class="add-btn ${inCart?'added':''}" data-id="${b.id}">${inCart?'Adicionado ✓':'Adicionar'}</button>
+      </div>`;
+    div.querySelector('h3').textContent = b.name;
+    grid.appendChild(div);
+  });
+  grid.querySelectorAll('.add-btn').forEach(btn=>{
+    btn.onclick = async ()=>{
+      const b = bouquets.find(x=>x.id==btn.dataset.id);
+      if(!cart.find(c=>c.id===b.id)){
+        cart.push({id:b.id, name:b.name, price:b.price});
+        await saveCart(); updateCartBadge(); renderBouquets();
+        showToast(b.name + ' adicionado ao carrinho');
+      }
+    };
+  });
+}
+
+function updateCartBadge(){
+  const badge = document.getElementById('cartBadge');
+  if(cart.length){ badge.style.display='flex'; badge.textContent = cart.length; }
+  else badge.style.display='none';
+}
+function renderCart(){
+  const wrap = document.getElementById('cartItems');
+  wrap.innerHTML = cart.length ? '' : '<p style="color:var(--ink-soft);font-size:.85rem;padding:10px 0;">O seu carrinho está vazio.</p>';
+  let total = 0;
+  cart.forEach(c=>{
+    total += c.price;
+    const row = document.createElement('div'); row.className='cart-item';
+    const s1=document.createElement('span'), s2=document.createElement('span');
+    s1.textContent=c.name; s2.textContent=c.price.toFixed(2)+' €';
+    row.append(s1,s2); wrap.appendChild(row);
+  });
+  document.getElementById('cartTotal').textContent = total.toFixed(2) + ' €';
+}
+
+/* ---------- gate / identity ---------- */
+async function initIdentity(){
+  try{
+    claudeUser = await window.claude.use('user');
+    claudeDb = await window.claude.use('db');
+    claudeAssets = await window.claude.use('assets');
+    claudeSample = await window.claude.use('sample');
+  }catch(e){}
+
+  if(claudeUser){
+    const me = await claudeUser.me();
+    uid = me.id;
+    document.getElementById('gateAvatar').src = me.avatarUrl || genericAvatar;
+    document.getElementById('gateName').textContent = me.name || 'a tua conta Claude';
+    document.getElementById('gateIdentity').hidden = false;
+    document.getElementById('gateNote').textContent = uid
+      ? 'Os teus dados ficam guardados nesta conta.'
+      : 'Sem sessão detetada — os dados ficam apenas neste dispositivo.';
+    document.getElementById('navAvatar').src = me.avatarUrl || genericAvatar;
+    document.getElementById('profAvatar').src = me.avatarUrl || genericAvatar;
+    document.getElementById('profName').textContent = me.name || 'Visitante';
+    document.getElementById('profEmail').textContent = me.email || 'Email não disponível';
+  } else {
+    document.getElementById('gateNote').textContent = 'Sem ligação à conta — os dados ficam apenas neste dispositivo.';
+    document.getElementById('navAvatar').src = genericAvatar;
+    document.getElementById('profAvatar').src = genericAvatar;
+    document.getElementById('profName').textContent = 'Visitante';
+    document.getElementById('profEmail').textContent = '—';
+  }
+}
+
+document.getElementById('gateEnter').onclick = async ()=>{
+  document.getElementById('gate').hidden = true;
+  document.getElementById('app').hidden = false;
+  let usedDb = false;
+  if(claudeDb && uid){
+    try{ await loadFromDb(); usedDb = true; }
+    catch(e){ showToast('Não foi possível ligar à conta — a guardar só neste dispositivo.'); }
+  }
+  if(!usedDb) lsLoad();
+  document.getElementById('remindersToggle').classList.toggle('on', remindersEnabled);
+  renderPlants(); renderBouquets(); updateCartBadge();
+};
+
+/* ---------- nav ---------- */
+document.querySelectorAll('nav.bottom button').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+    document.getElementById('fabAdd').style.display = btn.dataset.tab==='jardim' ? 'flex' : 'none';
+    document.getElementById('aiInputRow').hidden = btn.dataset.tab!=='ai';
+  };
+});
+
+document.getElementById('chipRow').addEventListener('click', e=>{
+  const chip = e.target.closest('.chip'); if(!chip) return;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active'); activeFilter = chip.dataset.f; renderBouquets();
+});
+
+/* ---------- add / edit plant sheet + photo upload ---------- */
+const plantOverlay = document.getElementById('plantOverlay');
+const pDeleteBtn = document.getElementById('pDelete');
+let editingPlantId = null;
+const defaultPhotoHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M9 6l1-2h4l1 2"/></svg><span id="photoLabel">Adicionar foto</span>`;
+
+function resetPlantSheet(){
+  editingPlantId = null;
+  pendingPhotoId = null;
+  document.getElementById('plantSheetTitle').textContent = 'Adicionar planta';
+  document.getElementById('pSave').textContent = 'Guardar planta';
+  document.getElementById('pName').value = '';
+  document.getElementById('pLoc').value = '';
+  document.getElementById('pFreq').value = '7';
+  document.getElementById('photoUpload').innerHTML = defaultPhotoHTML;
+  pDeleteBtn.hidden = true;
+  pDeleteBtn.textContent = 'Apagar planta';
+}
+function openPlantEditor(id){
+  const p = plants.find(x=>x.id===id); if(!p) return;
+  editingPlantId = id;
+  pendingPhotoId = p.photoId || null;
+  document.getElementById('plantSheetTitle').textContent = 'Editar planta';
+  document.getElementById('pSave').textContent = 'Guardar alterações';
+  document.getElementById('pName').value = p.name;
+  document.getElementById('pLoc').value = p.loc;
+  document.getElementById('pFreq').value = String(p.freq);
+  document.getElementById('photoUpload').innerHTML = p.photoUrl ? `<img src="${p.photoUrl}" alt="">` : defaultPhotoHTML;
+  pDeleteBtn.hidden = false;
+  pDeleteBtn.textContent = 'Apagar planta';
+  plantOverlay.classList.add('open');
+}
+document.getElementById('fabAdd').onclick = ()=>{ resetPlantSheet(); plantOverlay.classList.add('open'); };
+document.getElementById('pCancel').onclick = ()=>{ plantOverlay.classList.remove('open'); resetPlantSheet(); };
+document.getElementById('photoUpload').onclick = ()=> document.getElementById('photoInput').click();
+document.getElementById('photoInput').onchange = async (e)=>{
+  const file = e.target.files[0]; if(!file) return;
+  const box = document.getElementById('photoUpload');
+  document.getElementById('photoLabel').textContent = 'A carregar…';
+  if(claudeAssets){
+    try{
+      const res = await claudeAssets.upload(file);
+      pendingPhotoId = res.id;
+      box.innerHTML = `<img src="${res.url}" alt="">`;
+    }catch(err){
+      document.getElementById('photoLabel').textContent = 'Falhou — tenta outra foto';
+    }
+  } else {
+    pendingPhotoId = null;
+    const reader = new FileReader();
+    reader.onload = ()=>{ box.innerHTML = `<img src="${reader.result}" alt="">`; };
+    reader.readAsDataURL(file);
+  }
+};
+document.getElementById('pSave').onclick = async ()=>{
+  const name = document.getElementById('pName').value.trim();
+  if(!name){ document.getElementById('pName').focus(); return; }
+  const loc = document.getElementById('pLoc').value.trim() || 'Sem localização';
+  const freq = parseInt(document.getElementById('pFreq').value, 10);
+  const photoImg = document.querySelector('#photoUpload img');
+  const photoUrl = photoImg ? photoImg.src : null;
+
+  if(editingPlantId){
+    const p = plants.find(x=>x.id===editingPlantId);
+    Object.assign(p, {name, loc, freq, photoId: pendingPhotoId || null, photoUrl});
+    if(claudeDb && uid){
+      try{ await plantsCol().doc(editingPlantId).update({name, loc, freq, photoId: pendingPhotoId || null}); }
+      catch(e){ showToast('Não foi possível sincronizar — guardado só neste dispositivo.'); }
+    } else lsSave();
+    showToast(name + ' atualizada');
+  } else {
+    if(claudeDb && uid){
+      const doc = {name, loc, freq, lastWatered: Date.now(), photoId: pendingPhotoId || null};
+      try{
+        const ref = await plantsCol().add(doc);
+        plants.push({id: ref.id, ...doc, photoUrl});
+      }catch(e){
+        plants.push({id: 'p'+Date.now(), ...doc, photoUrl});
+        showToast('Não foi possível sincronizar — guardado só neste dispositivo.');
+      }
+    } else {
+      plants.push({id: 'p'+Date.now(), name, loc, freq, lastWatered: Date.now(), photoUrl});
+      lsSave();
+    }
+    showToast(name + ' adicionada ao jardim 🌿');
+  }
+  renderPlants();
+  plantOverlay.classList.remove('open');
+  resetPlantSheet();
+};
+pDeleteBtn.onclick = async ()=>{
+  if(!editingPlantId) return;
+  if(pDeleteBtn.textContent !== 'Confirmar eliminação'){
+    pDeleteBtn.textContent = 'Confirmar eliminação';
+    return;
+  }
+  const id = editingPlantId;
+  const p = plants.find(x=>x.id===id);
+  plants = plants.filter(x=>x.id!==id);
+  if(claudeDb && uid){
+    try{ await plantsCol().doc(id).delete(); }
+    catch(e){ showToast('Não foi possível sincronizar a eliminação.'); }
+  } else lsSave();
+  renderPlants();
+  plantOverlay.classList.remove('open');
+  resetPlantSheet();
+  showToast((p ? p.name : 'Planta') + ' foi removida');
+};
+
+/* ---------- cart sheet ---------- */
+const cartOverlay = document.getElementById('cartOverlay');
+document.getElementById('cartBtn').onclick = ()=>{ renderCart(); cartOverlay.classList.add('open'); };
+document.getElementById('cartClose').onclick = ()=> cartOverlay.classList.remove('open');
+document.getElementById('cartCheckout').onclick = async ()=>{
+  if(!cart.length) return;
+  cart = []; await saveCart(); updateCartBadge(); renderBouquets();
+  cartOverlay.classList.remove('open');
+  showToast('Encomenda confirmada — obrigado! 💐');
+};
+
+/* ---------- profile sheet ---------- */
+const profileOverlay = document.getElementById('profileOverlay');
+document.getElementById('profileBtn').onclick = ()=> profileOverlay.classList.add('open');
+document.getElementById('profClose').onclick = ()=> profileOverlay.classList.remove('open');
+document.getElementById('remindersToggle').onclick = async function(){
+  remindersEnabled = !remindersEnabled;
+  this.classList.toggle('on', remindersEnabled);
+  await saveProfile();
+};
+
+[plantOverlay, cartOverlay, profileOverlay].forEach(ov=>{
+  ov.addEventListener('click', e=>{
+    if(e.target===ov){ ov.classList.remove('open'); if(ov===plantOverlay) resetPlantSheet(); }
+  });
+});
+
+/* ---------- AI assistant ---------- */
+function addBubble(role, text){
+  const log = document.getElementById('chatLog');
+  const b = document.createElement('div');
+  b.className = 'bubble ' + role;
+  b.textContent = text;
+  log.appendChild(b);
+  b.scrollIntoView({behavior:'smooth', block:'end'});
+  return b;
+}
+async function askAI(question){
+  if(!question.trim()) return;
+  document.getElementById('aiSuggestions').style.display = 'none';
+  addBubble('user', question);
+  chatTurns.push({role:'user', content: question});
+  const aiBubble = addBubble('ai', 'A pensar…');
+  const instructions = 'És o jardineiro-florista da app Verde & Rose. Responde em português europeu, de forma calorosa, prática e breve (máx. 4 frases), sobre cuidado de plantas ou escolha de flores/arranjos.';
+  const turns = [{role:'user', content: instructions}, ...chatTurns];
+
+  if(claudeSample){
+    // Dentro do Claude: usa a capacidade "sample" nativa do artefacto.
+    try{
+      const {text} = await claudeSample(turns, {
+        modelTier:'quick', cache:false,
+        onText: ({text})=>{ aiBubble.textContent = text; }
+      });
+      chatTurns.push({role:'assistant', content:text});
+    }catch(err){
+      aiBubble.textContent = err.code === 'not_granted'
+        ? 'É preciso autorizar o assistente para responder.'
+        : 'Não foi possível obter resposta agora. Tenta novamente.';
+    }
+    return;
+  }
+
+  // Fora do Claude: chama a tua própria função de servidor, que guarda a
+  // chave da API em segurança. Ver netlify/functions/ask.js.
+  try{
+    const res = await fetch('/.netlify/functions/ask', {
+      method: 'POST',
+      headers: {'content-type':'application/json'},
+      body: JSON.stringify({turns})
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'erro');
+    aiBubble.textContent = data.text;
+    chatTurns.push({role:'assistant', content:data.text});
+  }catch(err){
+    aiBubble.textContent = 'O assistente ainda não está configurado neste site (falta a função de servidor com a chave da API).';
+  }
+}
+document.getElementById('aiSend').onclick = ()=>{
+  const input = document.getElementById('aiInput');
+  const q = input.value; input.value=''; askAI(q);
+};
+document.getElementById('aiInput').addEventListener('keydown', e=>{
+  if(e.key==='Enter'){ e.preventDefault(); document.getElementById('aiSend').click(); }
+});
+document.getElementById('aiSuggestions').addEventListener('click', e=>{
+  const chip = e.target.closest('.ai-chip'); if(!chip) return;
+  askAI(chip.textContent);
+});
+
+initIdentity();
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verde — O Meu Armário</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-app">
+  <header class="app-header">
+    <a href="menu.html" class="nav-icon" aria-label="Menu"><span class="material-icons-outlined">menu</span></a>
+    <h1 class="logo-serif logo-sm">Verde</h1>
+    <button type="button" class="nav-icon btn-icon" id="btn-search-toggle" aria-label="Pesquisar">
+      <span class="material-icons-outlined">search</span>
+    </button>
+  </header>
+  <div class="search-bar" id="search-bar" hidden>
+    <span class="material-icons-outlined">search</span>
+    <input type="search" id="search-input" placeholder="Pesquisar plantas..." autocomplete="off">
+    <button type="button" class="btn-icon" id="btn-search-clear" aria-label="Limpar">
+      <span class="material-icons-outlined">close</span>
+    </button>
+  </div>
+  <main class="cabinet-main">
+    <div class="cabinet-head">
+      <h2 class="page-title-serif">O Meu Armário</h2>
+      <a href="adicionar-planta.html" class="fab-add" aria-label="Adicionar planta">
+        <span class="material-icons-outlined">add</span>
+      </a>
+    </div>
+    <div class="filter-pills" role="tablist">
+      <button type="button" class="pill active" data-filter="todas">Todas</button>
+      <button type="button" class="pill" data-filter="rega">Rega</button>
+      <button type="button" class="pill" data-filter="adubar">Adubar</button>
+    </div>
+    <div id="plant-list" class="plant-list"></div>
+    <p id="empty-state" class="empty-state" hidden>Ainda não tem plantas. Toque em + para adicionar.</p>
+  </main>
+  <nav class="bottom-nav" data-active="cabinet"></nav>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/plants.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/armario.js"></script>
+</body>
+</html>

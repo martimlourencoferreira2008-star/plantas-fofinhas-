@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verde — Alertas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-app">
+  <header class="app-header">
+    <a href="menu.html" class="nav-icon"><span class="material-icons-outlined">menu</span></a>
+    <h1 class="logo-serif logo-sm">Verde</h1>
+    <span class="nav-icon muted"></span>
+  </header>
+  <main class="alerts-main">
+    <h2 class="page-title-serif">Alertas</h2>
+    <div id="alerts-list" class="alerts-list"></div>
+  </main>
+  <nav class="bottom-nav" data-active="alerts"></nav>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/plants.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    Auth.requireAuth();
+    UI.renderBottomNav('alerts');
+    const user = Auth.currentUser();
+    const plants = Plants.listForUser(user.id);
+    const alerts = [];
+    plants.forEach(p => {
+      const st = Plants.getStatus(p);
+      if (st === 'rega') alerts.push({ plant: p, type: 'rega', text: 'Precisa de água', icon: 'water_drop' });
+      else if (st === 'adubar') alerts.push({ plant: p, type: 'adubar', text: 'Adubar', icon: 'science' });
+    });
+    const container = document.getElementById('alerts-list');
+    if (!alerts.length) {
+      container.innerHTML = '<p class="empty-state">Não existem alertas ativos. Todas as plantas estão em dia.</p>';
+    } else {
+      container.innerHTML = alerts.map(a =>
+        '<a href="editar-planta.html?id=' + encodeURIComponent(a.plant.id) + '" class="alert-card alert-' + a.type + '">' +
+        '<span class="material-icons-outlined">' + a.icon + '</span>' +
+        '<div><strong>' + escapeHtml(a.plant.nome) + '</strong><span>' + a.text + ' · ' + escapeHtml(a.plant.localizacao) + '</span></div>' +
+        '<span class="material-icons-outlined chevron">chevron_right</span></a>'
+      ).join('');
+    }
+    function escapeHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verde — Adicionar Planta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-app page-form">
+  <header class="form-header">
+    <a href="armario.html" class="nav-icon" aria-label="Voltar">
+      <span class="material-icons-outlined">arrow_back</span>
+    </a>
+    <h2 class="page-title-serif form-title">Adicionar Planta</h2>
+    <span class="nav-icon"></span>
+  </header>
+  <main class="form-main">
+    <label class="photo-upload" id="photo-label">
+      <input type="file" id="photo" accept="image/*" hidden>
+      <span class="material-icons-outlined photo-icon">photo_camera</span>
+      <span class="photo-text">Adicionar foto</span>
+      <img id="photo-preview" alt="" hidden>
+    </label>
+    <form id="plant-form" class="plant-form">
+      <div class="field">
+        <label for="nome">Nome da planta</label>
+        <input type="text" id="nome" placeholder="Ex: Ficus" required>
+      </div>
+      <div class="field">
+        <label for="especie">Espécie (opcional)</label>
+        <input type="text" id="especie" placeholder="Ex: Ficus elastica">
+      </div>
+      <div class="field">
+        <label for="frequencia">Frequência de rega</label>
+        <div class="select-wrap">
+          <select id="frequencia" required>
+            <option value="">Selecione a frequência</option>
+            <option value="2">A cada 2 dias</option>
+            <option value="3">A cada 3 dias</option>
+            <option value="5">A cada 5 dias</option>
+            <option value="7">Semanal</option>
+            <option value="14">Quinzenal</option>
+          </select>
+          <span class="material-icons-outlined select-chevron">expand_more</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="localizacao">Localização</label>
+        <input type="text" id="localizacao" placeholder="Ex: Sala de Estar" required>
+      </div>
+      <p class="form-error" id="form-error" hidden></p>
+      <button type="submit" class="btn btn-primary btn-pill btn-wide">Guardar Planta</button>
+    </form>
+  </main>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/plants.js"></script>
+  <script src="js/form-planta.js"></script>
+  <script>
+    Auth.requireAuth();
+    FormPlanta.init({ mode: 'create', redirect: 'armario.html' });
+  </script>
+</body>
+</html>

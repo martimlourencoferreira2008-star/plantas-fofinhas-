@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verde — Perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-app">
+  <header class="app-header">
+    <a href="menu.html" class="nav-icon"><span class="material-icons-outlined">arrow_back</span></a>
+    <h1 class="logo-serif logo-sm">Verde</h1>
+    <span class="nav-icon"></span>
+  </header>
+  <main class="profile-main">
+    <h2 class="page-title-serif">Definições / Perfil</h2>
+    <form id="profile-form" class="plant-form profile-form">
+      <div class="field">
+        <label for="name">Nome</label>
+        <input type="text" id="name" required>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" readonly class="readonly">
+      </div>
+      <div class="field">
+        <label for="notificacoes">Lembretes de rega</label>
+        <div class="select-wrap">
+          <select id="notificacoes">
+            <option value="on">Ativados</option>
+            <option value="off">Desativados</option>
+          </select>
+          <span class="material-icons-outlined select-chevron">expand_more</span>
+        </div>
+      </div>
+      <p class="form-success" id="profile-success" hidden>Perfil guardado com sucesso.</p>
+      <button type="submit" class="btn btn-primary btn-pill btn-wide">Guardar perfil</button>
+    </form>
+    <button type="button" id="btn-logout" class="btn btn-secondary btn-pill btn-wide">Terminar sessão</button>
+  </main>
+  <nav class="bottom-nav" data-active="profile"></nav>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    Auth.requireAuth();
+    UI.renderBottomNav('profile');
+    const user = Auth.currentUser();
+    document.getElementById('name').value = user.name || '';
+    document.getElementById('email').value = user.email || '';
+    const settings = DB.getSettings(user.id);
+    document.getElementById('notificacoes').value = settings.notifications ? 'on' : 'off';
+
+    document.getElementById('profile-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      Auth.updateProfile(user.id, { name });
+      DB.saveSettings(user.id, {
+        notifications: document.getElementById('notificacoes').value === 'on'
+      });
+      const ok = document.getElementById('profile-success');
+      ok.hidden = false;
+      setTimeout(() => { ok.hidden = true; }, 3000);
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', function () {
+      Auth.logout();
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verde — Capa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-splash">
+  <main class="splash">
+    <h1 class="logo-serif">Verde</h1>
+    <p class="splash-tagline">Cultivate your calm. Precision care for your botanical companions.</p>
+    <a href="login.html" class="btn btn-primary btn-pill btn-wide">
+      Get Started
+      <span class="material-icons-outlined" aria-hidden="true">arrow_forward</span>
+    </a>
+    <a href="login.html" class="link-uppercase">I already have an account</a>
+  </main>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    if (Auth.isLoggedIn()) {
+      window.location.href = 'menu.html';
+    }
+  </script>
+</body>
+</html>

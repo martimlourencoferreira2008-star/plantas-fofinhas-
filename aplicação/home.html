@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verde — Início</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-app">
+  <header class="app-header">
+    <span class="nav-icon muted"></span>
+    <h1 class="logo-serif logo-sm">Verde</h1>
+    <span class="nav-icon muted"></span>
+  </header>
+  <main class="home-main">
+    <h2 class="page-title-serif">Início</h2>
+    <p class="home-intro" id="home-intro"></p>
+    <div class="stats-row" id="stats-row"></div>
+    <h3 class="section-label">Próximas ações</h3>
+    <ul id="upcoming-list" class="upcoming-list"></ul>
+    <a href="armario.html" class="btn btn-primary btn-pill btn-wide home-cta">Ver armário</a>
+  </main>
+  <nav class="bottom-nav" data-active="home"></nav>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/plants.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    Auth.requireAuth();
+    UI.renderBottomNav('home');
+    const user = Auth.currentUser();
+    document.getElementById('home-intro').textContent =
+      'Bem-vindo de volta, ' + user.name + '. Aqui está o resumo dos cuidados com as suas plantas.';
+
+    const all = Plants.listForUser(user.id);
+    const needsWater = all.filter(p => Plants.getStatus(p) === 'rega');
+    const needsFert = all.filter(p => Plants.getStatus(p) === 'adubar');
+    document.getElementById('stats-row').innerHTML =
+      '<div class="stat-card"><span class="stat-num">' + all.length + '</span><span class="stat-label">Plantas</span></div>' +
+      '<div class="stat-card"><span class="stat-num">' + needsWater.length + '</span><span class="stat-label">Precisam rega</span></div>' +
+      '<div class="stat-card"><span class="stat-num">' + needsFert.length + '</span><span class="stat-label">Adubar</span></div>';
+
+    const upcoming = Plants.getUpcoming(user.id, 5);
+    const ul = document.getElementById('upcoming-list');
+    if (!upcoming.length) {
+      ul.innerHTML = '<li class="upcoming-item">Sem tarefas urgentes. Excelente trabalho!</li>';
+    } else {
+      ul.innerHTML = upcoming.map(u =>
+        '<li class="upcoming-item"><strong>' + escapeHtml(u.plant.nome) + '</strong> — ' + escapeHtml(u.label) + '</li>'
+      ).join('');
+    }
+    function escapeHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+  </script>
+</body>
+</html>

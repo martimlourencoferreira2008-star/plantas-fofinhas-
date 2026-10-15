@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verde — Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-app">
+  <header class="app-header">
+    <span class="material-icons-outlined nav-icon muted">menu</span>
+    <h1 class="logo-serif logo-sm">Verde</h1>
+    <span class="nav-icon muted"></span>
+  </header>
+  <main class="menu-main">
+    <h2 class="page-title-serif">Menu</h2>
+    <p class="menu-greeting" id="menu-greeting"></p>
+    <nav class="menu-grid">
+      <a href="armario.html" class="menu-card">
+        <span class="material-icons-outlined menu-card-icon">potted_plant</span>
+        <span class="menu-card-title">O Meu Armário</span>
+        <span class="menu-card-desc">Ver, pesquisar e gerir plantas</span>
+      </a>
+      <a href="adicionar-planta.html" class="menu-card">
+        <span class="material-icons-outlined menu-card-icon">add_circle_outline</span>
+        <span class="menu-card-title">Adicionar Planta</span>
+        <span class="menu-card-desc">Registar nova planta</span>
+      </a>
+      <a href="alertas.html" class="menu-card">
+        <span class="material-icons-outlined menu-card-icon">notifications_none</span>
+        <span class="menu-card-title">Alertas</span>
+        <span class="menu-card-desc">Regas e adubações</span>
+      </a>
+      <a href="perfil.html" class="menu-card">
+        <span class="material-icons-outlined menu-card-icon">settings</span>
+        <span class="menu-card-title">Definições / Perfil</span>
+        <span class="menu-card-desc">Conta e preferências</span>
+      </a>
+    </nav>
+  </main>
+  <nav class="bottom-nav" data-active="home"></nav>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/plants.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    Auth.requireAuth();
+    const user = Auth.currentUser();
+    document.getElementById('menu-greeting').textContent =
+      'Olá, ' + (user?.name || 'utilizador') + '. Escolha uma secção.';
+    UI.renderBottomNav('home');
+  </script>
+</body>
+</html>
